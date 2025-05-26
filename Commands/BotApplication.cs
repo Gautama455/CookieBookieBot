@@ -1,6 +1,6 @@
 ﻿using CookieBookieBot.Commands.Interface;
-using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot;
 
 namespace CookieBookieBot.Commands
 {
@@ -14,6 +14,7 @@ namespace CookieBookieBot.Commands
             _botClient = new TelegramBotClient(token);
 
             _handlers.Add(new CommandUpdateHandler<StartCommand>());
+            _handlers.Add(new CommandUpdateHandler<ShowRecipeCommand>());
         }
 
         public void Start()

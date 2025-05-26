@@ -5,7 +5,6 @@ using Telegram.Bot.Types;
 namespace CookieBookieBot.Commands
 {
 
-
     internal class CommandUpdateHandler<TCommand> : ICommandUpdateHandler where TCommand : BotCommand, new()
     {
         private readonly TCommand _command = new();
@@ -16,9 +15,7 @@ namespace CookieBookieBot.Commands
                 return;
 
             if (messageText.StartsWith(_command.Command, StringComparison.OrdinalIgnoreCase))
-            {
                 await _command.Run(botClient, message, ct);
-            }
         }
     }
 }
