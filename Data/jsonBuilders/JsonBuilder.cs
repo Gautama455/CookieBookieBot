@@ -6,15 +6,17 @@ namespace CookieBookieBot.Data
 {
     internal class JsonBuilder
     {
-        public static void BuildRecipe()
+        public static void BuildRecipe(Telegram.Bot.Types.Message message)
         {
+            Directory.CreateDirectory($"Data\\chats\\{message.Chat.Id}");
+
             var recipe = new Recipe(
             id: "borsch-001",
             name: "Борщ",
             description: "Классический украинский борщ со свеклой и говядиной.",
             category: "Супы",
             difficulty: "Средний",
-            author: "Ivan Ivanov",
+            author: $"{message.From.Username}",
             ingredients: new List<Ingredient>
             {
                 new Ingredient("Свекла", 2, "шт"),
@@ -28,12 +30,12 @@ namespace CookieBookieBot.Data
                 "Варить до мягкости овощей.",
                 "Посолить и поперчить по вкусу."
             },
-            image: "https://example.com/images/borscht.jpg",
-            dateOfCreated: "ffff"
+            image: "",
+            dateOfCreated: $"{DateTime.Now}"
         );
             string json = JsonConvert.SerializeObject(recipe, Formatting.Indented);
 
-            File.WriteAllText("recipe.json", json);
+            File.WriteAllText($"Data\\chats\\{message.Chat.Id}\\standart_recipes_{message.Chat.Id}", json);
         }
     }
 }

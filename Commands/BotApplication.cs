@@ -15,6 +15,7 @@ namespace CookieBookieBot.Commands
 
             _handlers.Add(new CommandUpdateHandler<StartCommand>());
             _handlers.Add(new CommandUpdateHandler<ShowRecipeCommand>());
+            _handlers.Add(new CommandUpdateHandler<AddStandartRecipesCommand>());
         }
 
         public void Start()
