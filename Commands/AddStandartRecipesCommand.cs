@@ -11,7 +11,7 @@ namespace CookieBookieBot.Commands
         {
             try
             {
-                JsonBuilder.BuildRecipe(message);
+                JsonBuilder.BuildStandartRecipes(message);
                 await botClient.SendMessage(
                     chatId: message.Chat.Id,
                     text: "Стандартные рецепты успешно добавлены",

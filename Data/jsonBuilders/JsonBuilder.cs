@@ -6,7 +6,7 @@ namespace CookieBookieBot.Data
 {
     internal class JsonBuilder
     {
-        public static void BuildRecipe(Telegram.Bot.Types.Message message)
+        public static void BuildStandartRecipes(Telegram.Bot.Types.Message message)
         {
             Directory.CreateDirectory($"Data\\chats\\{message.Chat.Id}");
 
