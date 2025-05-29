@@ -5,7 +5,7 @@ namespace CookieBookieBot.Commands
 {
     internal class AddStandartRecipesCommand : BotCommand
     {
-        public override string Command => "/add_standrt_recipes";
+        public override string Command => "/add_standart_recipes";
 
         public override async Task Run(ITelegramBotClient botClient, Telegram.Bot.Types.Message message, CancellationToken ct)
         {
