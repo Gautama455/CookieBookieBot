@@ -8,9 +8,10 @@ namespace CookieBookieBot.Data
     {
         public static void BuildStandartRecipes(Telegram.Bot.Types.Message message)
         {
-            Directory.CreateDirectory($"Data\\chats\\{message.Chat.Id}");
+            string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent?.Parent?.Parent?.FullName;
+            Directory.CreateDirectory($"{Path.Combine(projectRoot, "Data")}\\chats\\{message.Chat.Id}");
 
-            var recipe = new Recipe(
+            Recipe recipe = new Recipe(
             id: "borsch-001",
             name: "Борщ",
             description: "Классический украинский борщ со свеклой и говядиной.",
@@ -32,10 +33,15 @@ namespace CookieBookieBot.Data
             },
             image: "",
             dateOfCreated: $"{DateTime.Now}"
-        );
-            string json = JsonConvert.SerializeObject(recipe, Formatting.Indented);
+            );
 
-            File.WriteAllText($"Data\\chats\\{message.Chat.Id}\\standart_recipes_{message.Chat.Id}", json);
+            List<Recipe> recipes = new List<Recipe>();
+
+            recipes.Add(recipe);
+
+            string json = JsonConvert.SerializeObject(recipes, Formatting.Indented);
+
+            File.WriteAllText($"{Path.Combine(projectRoot, "Data")}\\chats\\{message.Chat.Id}\\standart_recipes_{message.Chat.Id}", json);
         }
     }
 }
