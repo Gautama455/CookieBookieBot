@@ -1,4 +1,6 @@
-﻿using Telegram.Bot;
+﻿using CookieBookieBot.Models;
+using Newtonsoft.Json;
+using Telegram.Bot;
 
 namespace CookieBookieBot.Commands
 {
@@ -25,14 +27,43 @@ namespace CookieBookieBot.Commands
 
             string dishName = parts[1].Trim().ToLower();
 
-            if (RecipeStorage.Recipe.TryGetValue(dishName, out var recipe))
+            List<Recipe> recipes;
+            try
+            {
+                string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent?.Parent?.Parent?.FullName;
+                string json = File.ReadAllText($"{Path.Combine(projectRoot, "Data")}\\chats\\{message.Chat.Id}\\standart_recipes_{message.Chat.Id}");
+                recipes = JsonConvert.DeserializeObject<List<Recipe>>(json);
+            }
+            catch (Exception ex)
             {
                 await botClient.SendMessage(
                     chatId: message.Chat.Id,
-                    text: $"Рецепт для \"{dishName}\":\n{recipe}",
+                    text: $"Ошибка при чтении базы рецептов: {ex.Message}",
+                    cancellationToken: ct
+                );
+                return;
+            }
+
+            var recipe = recipes
+           .FirstOrDefault(r => r.Name.Trim().ToLower() == dishName);
+
+            if (recipe != null)
+            {
+                string response = $"*{recipe.Name}*\n\n" +
+                                  $"{recipe.Description}\n\n" +
+                                  $"Ингредиенты:\n" +
+                                  string.Join("\n", recipe.Ingredients.Select(item =>
+                                      $"- {item.Name}: {item.Quantity} {item.Unit}")) +
+                                  $"\n\nШаги:\n" +
+                                  string.Join("\n", recipe.Steps.Select((step, idx) =>
+                                      $"{idx + 1}. {step}"));
+
+                await botClient.SendMessage(
+                    chatId: message.Chat.Id,
+                    text: response,
                     parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown,
                     cancellationToken: ct
-                    );
+                );
             }
             else
             {
