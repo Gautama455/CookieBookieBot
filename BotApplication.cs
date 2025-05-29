@@ -1,8 +1,9 @@
-﻿using CookieBookieBot.Commands.Interface;
+﻿using CookieBookieBot.Commands;
+using CookieBookieBot.Commands.Interface;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace CookieBookieBot.Commands
+namespace CookieBookieBot
 {
     internal class BotApplication
     {
