@@ -17,7 +17,7 @@ namespace CookieBookieBot.Data
             description: "Классический украинский борщ со свеклой и говядиной.",
             category: "Супы",
             difficulty: "Средний",
-            author: $"{message.From.Username}",
+            author: message.From?.Username ?? "unknown",
             ingredients: new List<Ingredient>
             {
                 new Ingredient("Свекла", 2, "шт"),
@@ -32,7 +32,7 @@ namespace CookieBookieBot.Data
                 "Посолить и поперчить по вкусу."
             },
             image: "",
-            dateOfCreated: $"{DateTime.Now}"
+            dateOfCreated: DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
             );
 
             List<Recipe> recipes = new List<Recipe>();
