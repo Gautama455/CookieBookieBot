@@ -12,7 +12,6 @@ namespace CookieBookieBot.Data
             Directory.CreateDirectory($"{Path.Combine(projectRoot, "Data")}\\chats\\{message.Chat.Id}");
 
             Recipe recipe = new Recipe(
-            id: "borsch-001",
             name: "Борщ",
             description: "Классический украинский борщ со свеклой и говядиной.",
             category: "Супы",
@@ -31,8 +30,7 @@ namespace CookieBookieBot.Data
                 "Варить до мягкости овощей.",
                 "Посолить и поперчить по вкусу."
             },
-            image: "",
-            dateOfCreated: DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+            image: ""
             );
 
             List<Recipe> recipes = new List<Recipe>();

@@ -1,4 +1,5 @@
-﻿using CookieBookieBot.Commands;
+﻿using CookieBookieBot;
+using CookieBookieBot.Commands;
 
 internal class Program
 {

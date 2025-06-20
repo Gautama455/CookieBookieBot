@@ -13,14 +13,14 @@ namespace CookieBookieBot.Models
         public string Author { get; private set; }
         public List<string> Steps { get; private set; }
         public string Image { get; private set; }
-        public string DateOfCreated { get; private set; }
+        public DateTime DateOfCreated { get; private set; }
 
         [JsonConstructor]
-        public Recipe(string id, string name, string description, List<Ingredient> ingredients,
+        public Recipe(string name, string description, List<Ingredient> ingredients,
             string category, string difficulty, string author, List<string> steps,
-            string image, string dateOfCreated)
+            string image)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             Name = name;
             Description = description;
             Ingredients = ingredients;
@@ -29,7 +29,24 @@ namespace CookieBookieBot.Models
             Author = author;
             Steps = steps;
             Image = image;
-            DateOfCreated = dateOfCreated;
+            DateOfCreated = DateTime.Today;
         }
+
+        [JsonConstructor]
+        public Recipe()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
+        public void SetName(string name) { Name = name; }
+        public void SetDescription(string description) { Description = description; }
+        public void SetIngredients(List<Ingredient> ingredients) { Ingredients = ingredients; }
+        public void SetCategory(string category) { Category = category; }
+        public void SetDifficulty(string difficulty) { Difficulty = difficulty; }
+        public void SetAuthor(string authorName) { Author = authorName; }
+        public void SetSteps(List<string> steps) { Steps = steps; }
+        public void SetImage() { Image = ""; } // TODO добавить функционал для добавления картинок
+        public void SetDateOfCreated() { DateOfCreated = DateTime.Today; }
+
     }
 }
