@@ -9,7 +9,7 @@ namespace CookieBookieBot.Commands
 {
     internal class AddNewRecipeCommand : BotCommand, ISessionCommand
     {
-        public override string Command => "add_recipe";
+        public override string Command => "/add_new";
 
         private enum InputStep
         {
@@ -172,7 +172,8 @@ namespace CookieBookieBot.Commands
                     break;
             }
         }
-        public async Task HandleCallbackQuery(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken ct)
+
+        public override async Task HandleCallbackQuery(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken ct)
         {
             var chatId = callbackQuery.Message.Chat.Id;
 
@@ -192,6 +193,7 @@ namespace CookieBookieBot.Commands
                 // Сохранение рецепта (пример с файлом)
                 string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent?.Parent?.Parent?.FullName;
                 string dataPath = Path.Combine(projectRoot, "Data", "chats" , chatId.ToString(), "recipes.json");
+                Directory.CreateDirectory(dataPath);
                 List<Recipe> recipes = new();
                 if (File.Exists(dataPath))
                 {

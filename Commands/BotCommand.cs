@@ -7,5 +7,7 @@ namespace CookieBookieBot.Commands
     {
         public abstract string Command { get; }
         public abstract Task Run(ITelegramBotClient botClient, Message message, CancellationToken ct);
+
+        public abstract Task HandleCallbackQuery(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken ct);
     }
 }

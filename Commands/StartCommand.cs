@@ -21,5 +21,6 @@ namespace CookieBookieBot.Commands
                 cancellationToken: ct
                 );
         }
+        public override Task HandleCallbackQuery(ITelegramBotClient botClient, Telegram.Bot.Types.CallbackQuery callbackQuery, CancellationToken ct) => Task.CompletedTask;
     }
 }

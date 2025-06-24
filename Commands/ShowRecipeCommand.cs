@@ -8,6 +8,7 @@ namespace CookieBookieBot.Commands
     {
         public override string Command => "/recipe";
 
+
         public override async Task Run(ITelegramBotClient botClient, Telegram.Bot.Types.Message message, CancellationToken ct)
         {
             var parts = message.Text.Split(
@@ -74,5 +75,6 @@ namespace CookieBookieBot.Commands
                     );
             }
         }
+        public override Task HandleCallbackQuery(ITelegramBotClient botClient, Telegram.Bot.Types.CallbackQuery callbackQuery, CancellationToken ct) => Task.CompletedTask;
     }
 }

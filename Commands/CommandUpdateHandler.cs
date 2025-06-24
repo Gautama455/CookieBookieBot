@@ -5,34 +5,47 @@ using Telegram.Bot.Types;
 namespace CookieBookieBot.Commands
 {
 
-    internal class CommandUpdateHandler<TCommand> : ICommandUpdateHandler where TCommand : BotCommand, ISessionCommand, new()
+    internal class CommandUpdateHandler<TCommand> : ICommandUpdateHandler where TCommand : BotCommand, new()
     {
-        private readonly TCommand _command = new();
-
         private static readonly Dictionary<long, TCommand> _sessions = new();
 
         public async Task HandleUpdate(ITelegramBotClient botClient, Update update, CancellationToken ct)
         {
-            if (update.Message is not { } message || message.Text is not { } messageText)
-                return;
-
-            var chatId = message.Chat.Id;
-
-            if (messageText.StartsWith(_command.Command, StringComparison.OrdinalIgnoreCase))
+            if (update.Message is { } message && !string.IsNullOrEmpty(message.Text))
             {
-                var commandInstance = new TCommand();
-                _sessions[chatId] = commandInstance;
-                await commandInstance.Run(botClient, message, ct);
-                return;
-            }
+                var chatId = message.Chat.Id;
 
-            if (_sessions.TryGetValue(chatId, out var sessionCommand))
-            {
-                await sessionCommand.HandleUserResponse(botClient, message, ct);
-
-                if (sessionCommand.IsSessionComplete)
+                if (message.Text.StartsWith(new TCommand().Command, StringComparison.OrdinalIgnoreCase))
                 {
-                    _sessions.Remove(chatId);
+                    var commandInstance = new TCommand();
+                    _sessions[chatId] = commandInstance;
+                    await commandInstance.Run(botClient, message, ct);
+                    return;
+                }
+
+                if (_sessions.TryGetValue(chatId, out var sessionCommand))
+                {
+                    if (sessionCommand is ISessionCommand session)
+                    {
+                        await session.HandleUserResponse(botClient, message, ct);
+
+                        if (session.IsSessionComplete)
+                        {
+                            _sessions.Remove(chatId);
+                        }
+                    }
+                }
+            } 
+            else if (update.CallbackQuery is { } callBack)
+            {
+                if (_sessions.TryGetValue(callBack.Message.Chat.Id, out var sessionCommand))
+                {
+                    await sessionCommand.HandleCallbackQuery(botClient, callBack, ct);
+
+                    if (sessionCommand is ISessionCommand session && session.IsSessionComplete)
+                    {
+                        _sessions.Remove(callBack.Message.Chat.Id);
+                    }
                 }
             }
         }
